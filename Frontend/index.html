@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tech Product Showcase</title>
+  <style>
+    :root {
+      --bg: #eceff3;
+      --surface: #ffffff;
+      --ink: #14202b;
+      --muted: #5a6876;
+      --line: #d3dae1;
+      --accent: #0f6b6b;
+      --accent-dark: #0a4f4f;
+      --danger: #b3261e;
+      --focus: #1a73e8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+      line-height: 1.5;
+    }
+    header {
+      padding: 28px 24px 8px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    h1 { margin: 0; font-size: 1.75rem; letter-spacing: -0.01em; }
+    header p { margin: 4px 0 0; color: var(--muted); }
+
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 16px 24px 48px;
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      main { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    #form-panel { position: sticky; top: 16px; }
+    @media (max-width: 900px) { #form-panel { position: static; } }
+    #form-panel.editing { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+
+    h2 { margin: 0 0 14px; font-size: 1.1rem; }
+    label { display: block; font-size: 0.875rem; font-weight: 600; margin: 12px 0 4px; }
+    input, select {
+      width: 100%;
+      padding: 9px 10px;
+      font: inherit;
+      color: var(--ink);
+      background: #fff;
+      border: 1px solid #aab4be;
+      border-radius: 6px;
+    }
+    input:focus-visible, select:focus-visible, button:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 1px;
+    }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .actions { display: flex; gap: 10px; margin-top: 18px; }
+    button {
+      font: inherit;
+      font-weight: 600;
+      padding: 9px 16px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-dark); }
+    .btn-secondary { background: #fff; color: var(--ink); border-color: #aab4be; }
+    .btn-secondary:hover { background: #f2f5f7; }
+    .btn-danger { background: #fff; color: var(--danger); border-color: var(--danger); }
+    .btn-danger:hover { background: #fdecea; }
+    .btn-small { padding: 5px 10px; font-size: 0.85rem; }
+
+    #status {
+      min-height: 1.5em;
+      margin-top: 14px;
+      font-size: 0.9rem;
+    }
+    #status.ok { color: var(--accent-dark); }
+    #status.error { color: var(--danger); font-weight: 600; }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .toolbar h2 { margin: 0; }
+    .toolbar .filter { display: flex; align-items: center; gap: 8px; }
+    .toolbar .filter label { margin: 0; }
+    .toolbar select { width: auto; min-width: 150px; }
+
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { font-size: 0.85rem; color: var(--muted); font-weight: 600; }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+    td.name { font-weight: 600; }
+    td.spec { color: var(--muted); max-width: 320px; }
+    td.buttons { white-space: nowrap; }
+    td.buttons button + button { margin-left: 6px; }
+    tr.being-edited td { background: #e5f2f2; }
+
+    .empty { padding: 28px 12px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Tech Product Showcase</h1>
+    <p>Phones, laptops, headsets and tablets from 2024 to 2026. Add, edit and remove products.</p>
+  </header>
+
+  <main>
+    <section class="panel" id="form-panel" aria-labelledby="form-title">
+      <h2 id="form-title">Add a product</h2>
+      <form id="product-form" novalidate>
+        <input type="hidden" id="product-id">
+
+        <label for="product_name">Product name</label>
+        <input id="product_name" name="product_name" required maxlength="150" placeholder="e.g. Pixel 10 Pro">
+
+        <div class="row">
+          <div>
+            <label for="category">Category</label>
+            <input id="category" name="category" list="category-list" maxlength="60" placeholder="Phone">
+            <datalist id="category-list">
+              <option value="Phone"><option value="Laptop"><option value="Tablet"><option value="Headset">
+            </datalist>
+          </div>
+          <div>
+            <label for="brand">Brand</label>
+            <input id="brand" name="brand" maxlength="80" placeholder="Google">
+          </div>
+        </div>
+
+        <label for="key_spec">Key spec</label>
+        <input id="key_spec" name="key_spec" maxlength="200" placeholder="6.3-inch display, 128GB">
+
+        <div class="row">
+          <div>
+            <label for="release_year">Release year</label>
+            <input id="release_year" name="release_year" type="number" min="2000" max="2100" placeholder="2026">
+          </div>
+          <div>
+            <label for="price">Price (USD)</label>
+            <input id="price" name="price" type="number" min="0" step="0.01" placeholder="999.00">
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn-primary" id="submit-btn">Add product</button>
+          <button type="button" class="btn-secondary" id="cancel-btn" hidden>Cancel edit</button>
+        </div>
+        <div id="status" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <section class="panel" aria-labelledby="list-title">
+      <div class="toolbar">
+        <h2 id="list-title">Products <span id="count"></span></h2>
+        <div class="filter">
+          <label for="filter-category">Category</label>
+          <select id="filter-category"><option value="">All</option></select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Brand</th>
+              <th>Key spec</th>
+              <th class="num">Year</th>
+              <th class="num">Price</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="product-rows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
