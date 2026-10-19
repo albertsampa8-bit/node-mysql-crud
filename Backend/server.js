@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve the frontend page from the same server
-app.use(express.static(path.join(__dirname, '..', 'Fontend')));
+app.use(express.static(path.join(__dirname, 'Frontend')));
 
 const FIELDS = ['product_name', 'category', 'brand', 'key_spec', 'release_year', 'price'];
 
